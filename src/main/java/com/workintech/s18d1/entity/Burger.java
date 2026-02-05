@@ -22,7 +22,7 @@ public class Burger {
 
     @Size(max = 255)
     private String name;
-    @Min(0)
+
     private Double price;
     private boolean vegan;
 
@@ -33,5 +33,15 @@ public class Burger {
 
     @Size(max = 255)
     private String contents;
+
+    public void setIsVegan(Boolean bool)
+    {
+        this.vegan = bool;
+    }
+
+    public boolean getIsVegan()
+    {
+        return this.vegan;
+    }
 
 }

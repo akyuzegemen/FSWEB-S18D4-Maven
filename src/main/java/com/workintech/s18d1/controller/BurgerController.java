@@ -4,17 +4,15 @@ package com.workintech.s18d1.controller;
 import com.workintech.s18d1.dao.BurgerDao;
 import com.workintech.s18d1.entity.BreadType;
 import com.workintech.s18d1.entity.Burger;
-import com.workintech.s18d1.exceptions.BurgerErrorException;
-import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @RestController
-@RequestMapping("/workintech/burgers")
+@RequestMapping("/burger")
 public class BurgerController {
     private final BurgerDao burgerDao;
 
@@ -23,9 +21,8 @@ public class BurgerController {
         this.burgerDao = burgerDao;
     }
 
-
     //[GET]/workintech/burgers => tüm burger listini dönmeli.
-    @GetMapping("/")
+    @GetMapping
     public List<Burger> getAllBurgers()
     {
         return burgerDao.findAll();
@@ -35,33 +32,24 @@ public class BurgerController {
     @GetMapping("/{id}")
     public Burger getById(@PathVariable Long id)
     {
-
-        Burger foundBurger = burgerDao.findById(id);
-        return foundBurger;
+        return burgerDao.findById(id);
     }
 
     //[POST]/workintech/burgers => Bir adet burger objesini veritabanına kaydeder.
-    @PostMapping("/")
+    @PostMapping
     public Burger saveBurger(@RequestBody Burger burger)
     {
         return burgerDao.save(burger);
     }
 
     //[PUT]/workintech/burgers/{id} => İlgili id deki burger objesinin değerlerini yeni gelen data ile değiştirir.
-    @PutMapping("/{id}")
-    public Burger updateBurger(@PathVariable Long id, @RequestBody Burger burger)
+    @PutMapping
+    public Burger updateBurger(@RequestBody Burger burger)
     {
-        Burger burgerOld = burgerDao.findById(id);
-        if(burgerOld != null)
-        {
-            return burgerDao.update(burger);
-        }
-        throw new BurgerErrorException("Burger with that id NOT_FOUND", HttpStatus.NOT_FOUND);
-
+        return burgerDao.update(burger);
     }
 
     //[DELETE]/workintech/burgers/{id} => İlgili id değerindeki burger objesini veritabanından siler.
-
     @DeleteMapping("/{id}")
     public Burger deleteBurger(@PathVariable Long id)
     {
@@ -69,22 +57,22 @@ public class BurgerController {
     }
 
     //[GET]/workintech/burgers/findByPrice => RequestBody'de price değerini alır ve BurgerDaoImpl sınıfındaki findByPrice metodunu çağırır.
-    @GetMapping("/findByPrice")
-    public List<Burger> findByPrice(@RequestParam Double price)
+    @GetMapping("/price/{price}")
+    public List<Burger> findByPrice(@PathVariable int price)
     {
         return burgerDao.findByPrice(price);
     }
 
     //[GET]/workintech/burgers/findByBreadType => RequestBody'de breadType değerini alır ve BurgerDaoImpl sınıfındaki findByBreadType metodunu çağırır.
-    @GetMapping("/findByBreadType")
-    public List<Burger> findByBreadType(@RequestParam BreadType breadType)
+    @GetMapping("/breadType/{breadType}")
+    public List<Burger> findByBreadType(@PathVariable BreadType breadType)
     {
         return burgerDao.findByBreadType(breadType);
     }
 
     //[GET]/workintech/burgers/findByContent => RequestBody'de content değerini alır ve BurgerDaoImpl sınıfındaki findByContent metodunu çağırır.
-    @GetMapping("/findByContent")
-    public List<Burger> findByContent(@RequestBody String content)
+    @GetMapping("/content/{content}")
+    public List<Burger> findByContent(@PathVariable String content)
     {
         return burgerDao.findByContent(content);
     }

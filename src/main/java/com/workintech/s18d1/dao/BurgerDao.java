@@ -10,7 +10,7 @@ public interface BurgerDao {
     Burger save(Burger burger);
     Burger findById(Long id);
     List<Burger> findAll();
-    List<Burger> findByPrice(Double price);
+    List<Burger> findByPrice(int price);
     List<Burger> findByBreadType(BreadType breadType);
     List<Burger> findByContent(String contents);
     Burger update(Burger burger);
